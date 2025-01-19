@@ -2,7 +2,8 @@ import http from 'http';
 import app from './src/app.mjs';  // Import the app defined in app.mjs
 import config from './src/config/config.mjs'
 import Logger from './src/config/logger.mjs';
-import connectToMongoDB from './src/config/db/connection.mjs';
+import { connectToMongoDB } from '@DeveshSuryawanshi/salonx_infra_service';
+
 
 const PORT = config.app.port || 3000;
 const server = http.createServer(app);
