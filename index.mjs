@@ -1,9 +1,7 @@
 import http from 'http';
 import app from './src/app.mjs';  // Import the app defined in app.mjs
-import config from './src/config/config.mjs'
-import Logger from './src/config/logger.mjs';
-import { connectToMongoDB } from '@DeveshSuryawanshi/salonx_infra_service';
-
+import { config } from '@DeveshSuryawanshi/salonx_infra_service'
+import { Logger } from '@DeveshSuryawanshi/salonx_infra_service';
 
 const PORT = config.app.port || 3000;
 const server = http.createServer(app);
@@ -11,8 +9,7 @@ const server = http.createServer(app);
 // Start the server
 server.listen(PORT, async() => {
     try {
-        await connectToMongoDB();
-        Logger.info(`API Gateway running on http://localhost:${PORT}`);
+        Logger.info(`Auth service running on http://localhost:${PORT}`);
     } catch (error) {
         Logger.error("Error starting server: ", error);
     }

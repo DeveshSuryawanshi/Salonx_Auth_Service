@@ -3,16 +3,18 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
-import Logger from "./config/logger.mjs";
-import router from "./routes/index.mjs";
-import requestLogger from './src/middlewares/requestLogger.middleware.mjs';
-import crossOriginControl from './middlewares/crossOriginControl.middleware.mjs';
-import errorMiddleware from "./middlewares/error.middleware.mjs";
+import { Logger } from "@DeveshSuryawanshi/salonx_infra_service";
+import router from "./routes/main.routes.mjs";
+import { requestLogger } from '@DeveshSuryawanshi/salonx_infra_service';
+import { configureCorsPolicy } from '@DeveshSuryawanshi/salonx_infra_service';
+import { errorHandler } from "@DeveshSuryawanshi/salonx_infra_service";
+import connection from './config/db/connection.mjs';
 
 const app = express();
 
 // Middleware setup
-app.use(crossOriginControl); // Enable Cross-Origin Resource Sharing
+app.use(connection);
+app.use(configureCorsPolicy); // Enable Cross-Origin Resource Sharing
 app.use(requestLogger); // Log HTTP requests
 app.use(helmet()); // Security Middleware
 app.use(morgan('combined')); // Log HTTP requests
@@ -33,6 +35,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
 });
 
-app.use(errorMiddleware);
+app.use(errorHandler);
 
 export default app;
