@@ -1,19 +1,19 @@
 import express from 'express';
-// import validateJWT from '../utils/jwtValidation.mjs';
+import { validateRequest } from '@DeveshSuryawanshi/salonx_infra_service';
 import { config }  from "@DeveshSuryawanshi/salonx_infra_service";
 import authRouter from './authRoutes/auth.routes.mjs';
 
 const router = express.Router();
 
 // Validate JWT for all routes
-router.use((req, res, next) => {
-    
+router.use(async(req, res, next) => {
+    console.log(req)
+    return res.status(400).json({ message: 'Invalid User ID!' });
     const openRoutes = config.open_route.routes || [];
     if (openRoutes.includes(req.path)) {
-        console.log(req.path);
-        return next(); // Skip JWT validation for public routes
+        return next(); // Skip validation for public routes
     }
-    validateJWT(req, res, next);
+    await validateRequest(req, res, next);
 });
 
 router.use("/v1/api", authRouter);

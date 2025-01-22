@@ -18,9 +18,8 @@ app.use(configureCorsPolicy); // Enable Cross-Origin Resource Sharing
 app.use(requestLogger); // Log HTTP requests
 app.use(helmet()); // Security Middleware
 app.use(morgan('combined')); // Log HTTP requests
-app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded requests
+app.use(bodyParser.json());
 
-// Gateway Routes
 app.use('/', router);
 
 // Fallback for unmatched routes

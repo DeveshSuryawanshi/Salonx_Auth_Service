@@ -9,7 +9,7 @@ const server = http.createServer(app);
 // Start the server
 server.listen(PORT, async() => {
     try {
-        Logger.info(`Auth service running on http://localhost:${PORT}`);
+        Logger.info(`Auth service running on PORT : ${PORT}`);
     } catch (error) {
         Logger.error("Error starting server: ", error);
     }

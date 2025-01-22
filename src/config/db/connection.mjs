@@ -11,7 +11,6 @@ const connection = async(req, res, next) => {
   
   try {
     req.dbConnection = await connectToMongoDB(tenant); // Establish tenant connection
-    console.log(tenant);
     Logger.info(`Database connection established for tenant: ${tenant}`);
     next(); // Proceed to the next middleware/route handler
   } catch (error) {
