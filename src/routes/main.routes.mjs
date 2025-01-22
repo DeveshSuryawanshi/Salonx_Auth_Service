@@ -7,8 +7,8 @@ const router = express.Router();
 
 // Validate JWT for all routes
 router.use(async(req, res, next) => {
-    console.log(req)
-    return res.status(400).json({ message: 'Invalid User ID!' });
+    console.log(req.body)
+    return res.status(400).json({ message: 'Invalid User ID!', body: req.body });
     const openRoutes = config.open_route.routes || [];
     if (openRoutes.includes(req.path)) {
         return next(); // Skip validation for public routes
