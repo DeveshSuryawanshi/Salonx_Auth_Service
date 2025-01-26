@@ -1,4 +1,4 @@
-import { User } from "@DeveshSuryawanshi/salonx_infra_service";
+import { getUserModel, Logger } from "@DeveshSuryawanshi/salonx_infra_service";
 
 class AuthService {
     constructor() {
@@ -15,18 +15,22 @@ class AuthService {
     }
 
     async register(userData) {
-        return {status: 200, success: true, data: userData, message: 'User registered successfully'};
-        const { firstName, lastName, email, password, role } = userData;
+        // return {status: 200, success: true, data: userData, message: 'User registered successfully'};
+        const { firstName, lastName, email, password } = userData;
 
         // Validate required fields
         if (!firstName || !lastName || !email || !password) {
           Logger.warn('Missing required fields during registration');
           return { status: 400, success: false, message: 'All required fields must be provided' };
         }
-      
+        
         try {
           // Check if the email is already in use
+          // const existingUser = await User.findOne({ email });
+          const User = getUserModel('test');
           const existingUser = await User.findOne({ email });
+          // console.log('User ---> ',existingUser);
+          // return
           if (existingUser) {
             Logger.warn(`Email already registered: ${email}`);
             return { status: 400, success: false, message: 'Email already registered' };
