@@ -3,11 +3,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
-import { Logger } from "@DeveshSuryawanshi/salonx_infra_service";
+import { Logger, setTenantToStore, tenantDBConnection, errorHandler, configureCorsPolicy, requestLogger } from "@DeveshSuryawanshi/salonx_infra_service";
 import router from "./routes/main.routes.mjs";
-import { requestLogger } from '@DeveshSuryawanshi/salonx_infra_service';
-import { configureCorsPolicy } from '@DeveshSuryawanshi/salonx_infra_service';
-import { errorHandler } from "@DeveshSuryawanshi/salonx_infra_service";
 import connection from './config/db/connection.mjs';
 
 const app = express();
@@ -19,6 +16,8 @@ app.use(requestLogger); // Log HTTP requests
 app.use(helmet()); // Security Middleware
 app.use(morgan('combined')); // Log HTTP requests
 app.use(bodyParser.json());
+app.use(tenantDBConnection); // Attach tenant and database connection to the request
+app.use(setTenantToStore);
 
 app.use('/', router);
 

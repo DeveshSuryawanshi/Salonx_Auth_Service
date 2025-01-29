@@ -16,6 +16,7 @@ class AuthController{
 
     async register (req, res, next){
         try {
+            // console.log('Request DB -->', req.db);
             const userData = req.body;
             const response = await this.AuthService.register(userData);
             return res.status(response.status).json(response);

@@ -1,4 +1,5 @@
-import { getUserModel, Logger } from "@DeveshSuryawanshi/salonx_infra_service";
+import { Logger } from "@DeveshSuryawanshi/salonx_infra_service";
+import { User } from "@DeveshSuryawanshi/salonx_infra_service/src/db/models/Users.model.mjs";
 
 class AuthService {
     constructor() {
@@ -26,11 +27,13 @@ class AuthService {
         
         try {
           // Check if the email is already in use
+
+          const UserModel = User(); // Automatically uses the correct tenant
+          const existingUser = await UserModel.findOne({ email });
+          // const User = getUserModel('test');
           // const existingUser = await User.findOne({ email });
-          const User = getUserModel('test');
-          const existingUser = await User.findOne({ email });
-          // console.log('User ---> ',existingUser);
-          // return
+          console.log('User ---> ',existingUser);
+          // // return
           if (existingUser) {
             Logger.warn(`Email already registered: ${email}`);
             return { status: 400, success: false, message: 'Email already registered' };
