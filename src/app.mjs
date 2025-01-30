@@ -11,13 +11,13 @@ const app = express();
 
 // Middleware setup
 app.use(connection);
+app.use(tenantDBConnection); // Attach tenant and database connection to the request
+app.use(setTenantToStore);
 app.use(configureCorsPolicy); // Enable Cross-Origin Resource Sharing
 app.use(requestLogger); // Log HTTP requests
 app.use(helmet()); // Security Middleware
 app.use(morgan('combined')); // Log HTTP requests
 app.use(bodyParser.json());
-app.use(tenantDBConnection); // Attach tenant and database connection to the request
-app.use(setTenantToStore);
 
 app.use('/', router);
 
