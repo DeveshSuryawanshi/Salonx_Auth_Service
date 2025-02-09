@@ -16,7 +16,6 @@ class AuthService {
     }
 
     async register(userData) {
-        // return {status: 200, success: true, data: userData, message: 'User registered successfully'};
         const { firstName, lastName, email, password } = userData;
 
         // Validate required fields
@@ -27,20 +26,15 @@ class AuthService {
         
         try {
           // Check if the email is already in use
-
-          const UserModel = User(); // Automatically uses the correct tenant
-          const existingUser = await UserModel.findOne({ email });
-          // const User = getUserModel('test');
-          // const existingUser = await User.findOne({ email });
-          console.log('User ---> ',existingUser);
-          // // return
+          const UserModel = await User() // Automatically uses the correct tenant
+          const existingUser =  await UserModel.findOne({ email });
           if (existingUser) {
             Logger.warn(`Email already registered: ${email}`);
             return { status: 400, success: false, message: 'Email already registered' };
           }
       
           // Create a new user
-          const newUser = new User({
+          const newUser = new UserModel({
             firstName,
             lastName,
             email,
@@ -50,7 +44,6 @@ class AuthService {
       
           // Save the user to the database
           const savedUser = await newUser.save();
-      
           Logger.info(`New user registered with email: ${email}`);
           
           // Exclude password from the response
